@@ -16,8 +16,8 @@ async function login() {
     });
 
     // Esperar y escribir el usuario
-    await page.waitForSelector('#username', { timeout: 10000 });
-    await page.type('#username', process.env.RAINBOW_USER, { delay: 50 });
+    await page.waitForSelector('#username', { timeout: 15000 });
+    await page.type('#username', process.env.RAINBOW_USER, { delay: 100 });
 
     // Pausa de 3 segundos
     await new Promise(resolve => setTimeout(resolve, 3000));
