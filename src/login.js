@@ -29,15 +29,15 @@ async function login() {
         .some(el => el.textContent.trim() === 'Continuar');
     }, { timeout: 5000 });
 
-    const continuarClick = await page.evaluate(() => {
-      const btn = Array.from(document.querySelectorAll('span.c-button__label'))
-        .find(el => el.textContent.trim() === 'Continuar');
-      if (btn) {
-        btn.click();
-        return true;
-      }
-      return false;
-    });
+    const btn = await page.$x("//span[contains(text(),'Continuar')]/.."); // buscá el botón padre del span
+    if (btn.length > 0) {
+      await Promise.all([
+        page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }),
+        btn[0].click()
+      ]);
+    } else {
+      throw new Error('❌ No se encontró el botón "Continuar"');
+    }
 
     if (!continuarClick) throw new Error('❌ No se encontró el botón "Continuar"');
 
@@ -57,15 +57,17 @@ async function login() {
         .some(el => el.textContent.trim() === 'Conectar');
     }, { timeout: 5000 });
 
-    const conectarClick = await page.evaluate(() => {
-      const btn = Array.from(document.querySelectorAll('span.c-button__label'))
-        .find(el => el.textContent.trim() === 'Conectar');
-      if (btn) {
-        btn.click();
-        return true;
-      }
-      return false;
-    });
+    // Buscar el botón "Conectar"
+    const conectarBtn = await page.$x("//span[contains(text(), 'Conectar')]/.."); // Subí al botón padre
+
+    if (conectarBtn.length > 0) {
+      await Promise.all([
+        page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }), // esperá navegación si cambia
+        conectarBtn[0].click()
+      ]);
+    } else {
+      throw new Error('❌ No se encontró el botón "Conectar"');
+    }
 
     if (!conectarClick) throw new Error('❌ No se encontró el botón "Conectar"');
 
