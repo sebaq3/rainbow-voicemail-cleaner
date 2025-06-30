@@ -9,6 +9,8 @@ async function login() {
   // args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
   const page = await browser.newPage();
+  page.setDefaultTimeout(60000); // 60 segundos
+  page.setDefaultNavigationTimeout(60000);
 
   try {
     await page.goto('https://web.openrainbow.com/rb/2.149.26/index.html#/login', {
