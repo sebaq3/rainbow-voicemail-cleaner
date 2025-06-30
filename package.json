@@ -1,0 +1,25 @@
+{
+  "name": "rainbow-voicemail-cleaner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sebaq3/rainbow-voicemail-cleaner.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sebaq3/rainbow-voicemail-cleaner/issues"
+  },
+  "homepage": "https://github.com/sebaq3/rainbow-voicemail-cleaner#readme",
+  "dependencies": {
+    "dotenv": "^17.0.0",
+    "node-cron": "^4.1.1",
+    "puppeteer": "^24.11.1"
+  }
+}
