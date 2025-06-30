@@ -1,7 +1,7 @@
 async function cleanupVoicemail(page) {
   try {
     // Esperar a que se cargue el buzón (ajustar selectores reales)
-    await page.waitForTimeout(5000); // o usar selectores específicos
+    await new Promise(resolve => setTimeout(resolve, 5000)); // o usar selectores específicos
 
     // Suponiendo que los mensajes tienen botones de borrar
     // const deleteButtons = await page.$$('.delete-button-selector');
