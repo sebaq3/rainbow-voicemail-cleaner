@@ -14,7 +14,7 @@ async function login() {
     await page.goto('https://web.openrainbow.com/rb/2.149.26/index.html#/login', {
       waitUntil: 'networkidle2'
     });
-
+    await new Promise(resolve => setTimeout(resolve, 60000));
     // Esperar y escribir el usuario
     await page.waitForSelector('#username', { timeout: 15000 });
     await page.type('#username', process.env.RAINBOW_USER, { delay: 100 });
