@@ -1,7 +1,13 @@
 const puppeteer = require('puppeteer');
+const { log } = require('./logger');
 
 async function login() {
-  const browser = await puppeteer.launch({ headless: false });
+  // const browser = await puppeteer.launch({
+    const browser = await puppeteer.connect({
+      browserWSEndpoint: 'ws://chrome:3000'
+  // headless: 'new',
+  // args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
   const page = await browser.newPage();
 
   try {
@@ -43,6 +49,8 @@ async function login() {
     // Ingresar contraseña (recién ahora)
     await page.type('#authPwd', process.env.RAINBOW_PASS, { delay: 50 });
 
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
     // Esperar hasta que aparezca y hacer clic en "Conectar"
     await page.waitForFunction(() => {
       return Array.from(document.querySelectorAll('span.c-button__label'))
@@ -65,10 +73,12 @@ async function login() {
     await new Promise(resolve => setTimeout(resolve, 5000)); // o usar un selector post-login
 
     console.log("✅ Login exitoso.");
+    log("✅ Login exitoso.", 'info');
     return { browser, page };
 
   } catch (error) {
     console.error("❌ Error en login:", error.message);
+    log("❌ Error en login: " + error.message, 'error');
     await browser.close();
     return { browser, page: null };
   }
