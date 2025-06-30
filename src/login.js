@@ -2,89 +2,62 @@ const puppeteer = require('puppeteer');
 const { log } = require('./logger');
 
 async function login() {
-  // const browser = await puppeteer.launch({
-    const browser = await puppeteer.connect({
-      browserWSEndpoint: 'ws://chrome:3000'
-  // headless: 'new',
-  // args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  const browser = await puppeteer.connect({
+    browserWSEndpoint: 'ws://chrome:3000'
   });
+
   const page = await browser.newPage();
-  page.setDefaultTimeout(60000); // 60 segundos
+  page.setDefaultTimeout(60000);
   page.setDefaultNavigationTimeout(60000);
 
   try {
+    log("🌐 Abriendo página de login...", 'info');
     await page.goto('https://web.openrainbow.com/rb/2.149.26/index.html#/login', {
       waitUntil: 'networkidle2'
     });
-    await new Promise(resolve => setTimeout(resolve, 60000));
-    // Esperar y escribir el usuario
-    await page.waitForSelector('#username', { timeout: 15000 });
+
+    // Esperar el input del usuario
+    await page.waitForSelector('#username');
     await page.type('#username', process.env.RAINBOW_USER, { delay: 100 });
 
-    // Pausa de 3 segundos
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    // Clic en botón "Continuar"
+    const continuarBtn = await page.$x("//span[contains(text(), 'Continuar')]/..");
+    if (continuarBtn.length === 0) throw new Error('❌ Botón "Continuar" no encontrado');
 
+    log("🔁 Click en 'Continuar'...", 'info');
+    await Promise.all([
+      continuarBtn[0].click(),
+      page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }).catch(() => {})
+    ]);
 
-    // Esperar hasta que aparezca el botón "Continuar" y hacer clic
-    await page.waitForFunction(() => {
-      return Array.from(document.querySelectorAll('span.c-button__label'))
-        .some(el => el.textContent.trim() === 'Continuar');
-    }, { timeout: 5000 });
-
-    const btn = await page.$x("//span[contains(text(),'Continuar')]/.."); // buscá el botón padre del span
-    if (btn.length > 0) {
-      await Promise.all([
-        page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }),
-        btn[0].click()
-      ]);
-    } else {
-      throw new Error('❌ No se encontró el botón "Continuar"');
-    }
-
-    if (!continuarClick) throw new Error('❌ No se encontró el botón "Continuar"');
-
-    await new Promise(resolve => setTimeout(resolve, 5000));
-
-    // Esperar a que cargue el campo de contraseña
-    await page.waitForSelector('#authPwd', { timeout: 10000 });
-
-    // Ingresar contraseña (recién ahora)
+    // Esperar campo de contraseña
+    await page.waitForSelector('#authPwd');
     await page.type('#authPwd', process.env.RAINBOW_PASS, { delay: 50 });
 
-    await new Promise(resolve => setTimeout(resolve, 5000));
+    // Clic en botón "Conectar"
+    const conectarBtn = await page.$x("//span[contains(text(), 'Conectar')]/..");
+    if (conectarBtn.length === 0) throw new Error('❌ Botón "Conectar" no encontrado');
 
-    // Esperar hasta que aparezca y hacer clic en "Conectar"
-    await page.waitForFunction(() => {
-      return Array.from(document.querySelectorAll('span.c-button__label'))
-        .some(el => el.textContent.trim() === 'Conectar');
-    }, { timeout: 5000 });
+    log("🔁 Click en 'Conectar'...", 'info');
+    await Promise.all([
+      conectarBtn[0].click(),
+      page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }).catch(() => {})
+    ]);
 
-    // Buscar el botón "Conectar"
-    const conectarBtn = await page.$x("//span[contains(text(), 'Conectar')]/.."); // Subí al botón padre
+    // Confirmar login exitoso (esperar selector de app, por ejemplo una clase de dashboard)
+    await page.waitForSelector('#app', { timeout: 15000 }).catch(() => {
+      throw new Error("❌ No se detectó carga de la app después del login.");
+    });
 
-    if (conectarBtn.length > 0) {
-      await Promise.all([
-        page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }), // esperá navegación si cambia
-        conectarBtn[0].click()
-      ]);
-    } else {
-      throw new Error('❌ No se encontró el botón "Conectar"');
-    }
-
-    if (!conectarClick) throw new Error('❌ No se encontró el botón "Conectar"');
-
-    // Esperar que la app cargue después del login
-    await new Promise(resolve => setTimeout(resolve, 5000)); // o usar un selector post-login
-
-    console.log("✅ Login exitoso.");
     log("✅ Login exitoso.", 'info');
     return { browser, page };
 
   } catch (error) {
     console.error("❌ Error en login:", error.message);
     log("❌ Error en login: " + error.message, 'error');
-    await browser.close();
-    return { browser, page: null };
+
+    try { await browser.close(); } catch (_) {}
+    return { browser: null, page: null };
   }
 }
 
