@@ -2,10 +2,10 @@ const puppeteer = require('puppeteer');
 const { log } = require('./logger');
 
 async function login() {
-  const browser = await puppeteer.connect({
-    browserWSEndpoint: 'ws://chrome:3000'
+  const browser = await puppeteer.launch({
+  headless: 'new',
+  args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
-
   const page = await browser.newPage();
   page.setDefaultTimeout(60000);
   page.setDefaultNavigationTimeout(60000);
