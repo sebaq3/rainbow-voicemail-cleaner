@@ -5,7 +5,14 @@ async function login() {
   const browser = await puppeteer.launch({
   headless: false,
   executablePath: '/usr/bin/chromium',
-  args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  args: [
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--disable-dev-shm-usage',
+    '--disable-gpu',
+    '--disable-software-rasterizer',
+    '--single-process'
+  ],
 });
   const page = await browser.newPage();
   page.setDefaultTimeout(90000);
