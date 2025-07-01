@@ -3,7 +3,7 @@ const { log } = require('./logger');
 
 async function login() {
   const browser = await puppeteer.launch({
-  headless: true,
+  headless: false,
   executablePath: '/usr/bin/chromium',
   args: ['--no-sandbox', '--disable-setuid-sandbox'],
 });
@@ -18,6 +18,7 @@ async function login() {
     });
 
      // Esperar y escribir el usuario
+     await page.screenshot({ path: '/tmp/error_login1.png', fullPage: true });
     await page.waitForSelector('#username', { timeout: 10000 });
     await page.type('#username', process.env.RAINBOW_USER, { delay: 50 });
 
@@ -27,6 +28,7 @@ async function login() {
 
     // Esperar hasta que aparezca el botón "Continuar" y hacer clic
     await page.waitForSelector('span.c-button__label', { timeout: 10000 });
+    await page.screenshot({ path: '/tmp/error_login2.png', fullPage: true });
 
     const continuarClick = await page.evaluate(() => {
       const btn = Array.from(document.querySelectorAll('span.c-button__label'))
@@ -37,7 +39,7 @@ async function login() {
       }
       return false;
     });
-
+    await page.screenshot({ path: '/tmp/error_login3.png', fullPage: true });
     if (!continuarClick) throw new Error('❌ No se encontró el botón "Continuar"');
 
     await new Promise(resolve => setTimeout(resolve, 5000));
