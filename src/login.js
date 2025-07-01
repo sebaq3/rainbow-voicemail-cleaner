@@ -3,9 +3,10 @@ const { log } = require('./logger');
 
 async function login() {
   const browser = await puppeteer.launch({
-  headless: 'new',
+  headless: true,
+  executablePath: '/usr/bin/chromium',
   args: ['--no-sandbox', '--disable-setuid-sandbox'],
-  });
+});
   const page = await browser.newPage();
   page.setDefaultTimeout(60000);
   page.setDefaultNavigationTimeout(60000);
