@@ -8,8 +8,8 @@ async function login() {
   args: ['--no-sandbox', '--disable-setuid-sandbox'],
 });
   const page = await browser.newPage();
-  page.setDefaultTimeout(60000);
-  page.setDefaultNavigationTimeout(60000);
+  page.setDefaultTimeout(90000);
+  page.setDefaultNavigationTimeout(90000);
 
   try {
     log("🌐 Abriendo página de login...", 'info');
