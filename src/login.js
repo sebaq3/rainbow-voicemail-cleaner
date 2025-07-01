@@ -47,6 +47,11 @@ async function login() {
       }
       return false;
     });
+
+    //Guardar en archivo la pagina
+    const html = await page.content();
+    require('fs').writeFileSync('/tmp/debug.html', html);
+
     await page.screenshot({ path: '/tmp/error_login3.png', fullPage: true });
     if (!continuarClick) throw new Error('❌ No se encontró el botón "Continuar"');
 
