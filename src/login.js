@@ -33,7 +33,7 @@ async function login() {
     await page.type('#username', process.env.RAINBOW_USER, { delay: 50 });
 
     // Pausa de 3 segundos
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise(resolve => setTimeout(resolve, 8000));
 
 
     // Esperar hasta que aparezca el botón "Continuar" y hacer clic
