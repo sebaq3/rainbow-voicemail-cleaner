@@ -35,7 +35,7 @@ async function login() {
 
 
     // Esperar hasta que aparezca el botón "Continuar" y hacer clic
-    await page.waitForSelector('span.c-button__label', { timeout: 10000 });
+    await page.waitForSelector('span.c-button__label', { timeout: 50000 });
     await page.screenshot({ path: '/tmp/error_login2.png', fullPage: true });
 
     const continuarClick = await page.evaluate(() => {
