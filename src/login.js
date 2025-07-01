@@ -16,6 +16,9 @@ async function login() {
   ],
 });
   const page = await browser.newPage();
+  await page.setExtraHTTPHeaders({
+  'Accept-Language': 'es-ES,es;q=0.9'
+  });
   page.setDefaultTimeout(90000);
   page.setDefaultNavigationTimeout(90000);
 
@@ -26,7 +29,6 @@ async function login() {
     });
 
      // Esperar y escribir el usuario
-     await page.screenshot({ path: '/tmp/error_login1.png', fullPage: true });
     await page.waitForSelector('#username', { timeout: 10000 });
     await page.type('#username', process.env.RAINBOW_USER, { delay: 50 });
 
@@ -36,11 +38,11 @@ async function login() {
 
     // Esperar hasta que aparezca el botón "Continuar" y hacer clic
     await page.waitForSelector('span.c-button__label', { timeout: 50000 });
-    await page.screenshot({ path: '/tmp/error_login2.png', fullPage: true });
+    
 
     const continuarClick = await page.evaluate(() => {
-      const btn = Array.from(document.querySelectorAll('span.c-button__label'))
-        .find(el => el.textContent.trim() === 'Continuar');
+  const btn = Array.from(document.querySelectorAll('span.c-button__label'))
+    .find(el => ['Continuar', 'Continue'].includes(el.textContent.trim()));
       if (btn) {
         btn.click();
         return true;
@@ -68,12 +70,12 @@ async function login() {
     // Esperar hasta que aparezca y hacer clic en "Conectar"
     await page.waitForFunction(() => {
       return Array.from(document.querySelectorAll('span.c-button__label'))
-        .some(el => el.textContent.trim() === 'Conectar');
+        .some(el => ['Conectar', 'Connect'].includes(el.textContent.trim()));
     }, { timeout: 5000 });
 
     const conectarClick = await page.evaluate(() => {
       const btn = Array.from(document.querySelectorAll('span.c-button__label'))
-        .find(el => el.textContent.trim() === 'Conectar');
+        .find(el => ['Conectar', 'Connect'].includes(el.textContent.trim()));
       if (btn) {
         btn.click();
         return true;
