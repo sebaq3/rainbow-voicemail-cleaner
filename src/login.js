@@ -26,10 +26,7 @@ async function login() {
 
 
     // Esperar hasta que aparezca el botón "Continuar" y hacer clic
-    await page.waitForFunction(() => {
-      return Array.from(document.querySelectorAll('span.c-button__label'))
-        .some(el => el.textContent.trim() === 'Continuar');
-    }, { timeout: 5000 });
+    await page.waitForSelector('span.c-button__label', { timeout: 10000 });
 
     const continuarClick = await page.evaluate(() => {
       const btn = Array.from(document.querySelectorAll('span.c-button__label'))
