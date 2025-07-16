@@ -43,8 +43,10 @@ async function cleanupVoicemail(page) {
     await new Promise(resolve => setTimeout(resolve, 5000));
 
     // Click en botón "Eliminar todos"
-    await page.waitForSelector('#callLogs-delete-all > svg-img > svg', { timeout: 10000 });
-    await page.click('#callLogs-delete-all > svg-img > svg');
+    await page.waitForSelector('#callLogs-delete-all > rb-svg-img > svg', { timeout: 10000 });
+    
+    await page.click('#callLogs-delete-all > rb-svg-img > svg');
+    
     console.log('✅ Click en botón eliminar todos.');
     log('✅ Click en botón eliminar todos.', 'info');
 

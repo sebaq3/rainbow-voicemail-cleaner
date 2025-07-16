@@ -5,7 +5,7 @@ const { log } = require('./logger');
 async function login() {
   console.log('Usando Chromium desde:', puppeteer.executablePath());
   const browser = await puppeteer.launch({
-  headless: 'new',
+  headless: false,
   args: [
     '--no-sandbox',
     '--disable-setuid-sandbox',
@@ -30,6 +30,7 @@ async function login() {
 
      // Esperar y escribir el usuario
     await page.waitForSelector('#username', { timeout: 10000 });
+    log("Encontro username ");
     await page.type('#username', process.env.RAINBOW_USER, { delay: 50 });
 
     // Pausa de 3 segundos
