@@ -5,7 +5,7 @@ const { log } = require('./logger');
 async function login() {
   console.log('Usando Chromium desde:', puppeteer.executablePath());
   const browser = await puppeteer.launch({
-  headless: false,
+  headless: 'new',
   args: [
     '--no-sandbox',
     '--disable-setuid-sandbox',
