@@ -25,5 +25,5 @@ async function runCleanup() {
 // Ejecutar al iniciar
 runCleanup();
 
-// Ejecutar cada 12h (a las 0:00 y 12:00)
-cron.schedule('0 0,12 * * *', runCleanup);
+// Ejecutar cada 6h
+cron.schedule('0 0,6 * * *', runCleanup);
