@@ -86,7 +86,7 @@ async function login() {
     // Esperar que la app cargue después del login
     await new Promise(resolve => setTimeout(resolve, 5000)); // o usar un selector post-login
 
-    console.log("✅ Login exitoso.");
+    
     log("✅ Login exitoso.", 'info');
     return { browser, page };
 

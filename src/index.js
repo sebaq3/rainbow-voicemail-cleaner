@@ -5,8 +5,7 @@ const cleanupVoicemail = require('./cleanupVoicemail');
 const { log } = require('./logger');
 
 async function runCleanup() {
-    log(`Ejecutando limpieza...`, 'info');
-    console.log(`[${new Date().toISOString()}] Ejecutando limpieza...`);
+    log(`Ejecutando limpieza...`, 'info');    
     const { browser, page } = await login();
     
     if (!page) {
@@ -18,7 +17,6 @@ async function runCleanup() {
     
     await cleanupVoicemail(page);
     await browser.close();
-    console.log("✔️ Proceso terminado.");
     log("✔️ Proceso terminado.", 'info');
 }
 
