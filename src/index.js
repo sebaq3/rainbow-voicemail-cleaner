@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 require('dotenv').config();
 const cron = require('node-cron');
 const login = require('./login');
@@ -24,4 +25,4 @@ async function runCleanup() {
 runCleanup();
 
 // Ejecutar cada 6h
-cron.schedule('0 0,6 * * *', runCleanup);
+//cron.schedule('0 0,6 * * *', runCleanup);

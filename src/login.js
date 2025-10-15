@@ -11,11 +11,22 @@ async function login() {
     '--disable-setuid-sandbox',
     '--disable-dev-shm-usage',
     '--disable-gpu',
-    '--disable-software-rasterizer',
-    '--single-process'
+    '--disable-software-rasterizer'
+
   ],
 });
   const page = await browser.newPage();
+
+  // 🩹 Esperar a que el frame principal esté listo
+  while (!page.mainFrame()) {
+    console.log('Esperando mainFrame...');
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+
+  
+  // 🩹 Espera adicional de seguridad (~1s)
+  await new Promise(resolve => setTimeout(resolve, 1000));
+
   await page.setExtraHTTPHeaders({
   'Accept-Language': 'es-ES,es;q=0.9'
   });
