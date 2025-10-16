@@ -9,7 +9,7 @@ async function login() {
   } catch (_) {}
   console.log('Usando Chromium desde:', puppeteer.executablePath());
   const browser = await puppeteer.launch({
-  headless: 'true',
+  headless: 'new',
   args: [
     '--no-sandbox',
     '--disable-setuid-sandbox',
