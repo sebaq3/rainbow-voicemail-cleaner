@@ -1,11 +1,15 @@
 const puppeteer = require('puppeteer');
 const { log } = require('./logger');
+const fs = require('fs');
 
 
 async function login() {
+  try {
+    fs.rmSync('/tmp/.org.chromium.Chromium', { recursive: true, force: true });
+  } catch (_) {}
   console.log('Usando Chromium desde:', puppeteer.executablePath());
   const browser = await puppeteer.launch({
-  headless: 'new',
+  headless: 'true',
   args: [
     '--no-sandbox',
     '--disable-setuid-sandbox',
@@ -14,7 +18,7 @@ async function login() {
     '--disable-software-rasterizer'
 
   ],
-});
+  });
   const page = await browser.newPage();
 
   // 🩹 Esperar a que el frame principal esté listo
@@ -107,6 +111,15 @@ async function login() {
     await browser.close();
     return { browser, page: null };
   }
+}
+async function loginWithRetry(maxRetries = 3) {
+  for (let i = 1; i <= maxRetries; i++) {
+    const result = await login();
+    if (result.page) return result;
+    console.error(`❌ Intento ${i} fallido, reintentando en 10s...`);
+    await new Promise(r => setTimeout(r, 10000));
+  }
+  throw new Error(`Fallaron ${maxRetries} intentos de login consecutivos`);
 }
 
 module.exports = login;

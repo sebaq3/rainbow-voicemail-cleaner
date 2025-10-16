@@ -7,17 +7,24 @@ const { log } = require('./logger');
 
 async function runCleanup() {
     log(`Ejecutando limpieza...`, 'info');    
-    const { browser, page } = await login();
+    //const { browser, page } = await login();
+    const { browser, page } = await loginWithRetry();
     
     if (!page) {
         console.error("❌ No se pudo iniciar sesión.");
         log("❌ No se pudo iniciar sesión.", 'error');
-        await browser.close();
+        //await browser.close();
+        process.on('exit', async () => {
+            try { await browser?.close(); } catch {}
+        });
         return;
     }
     
     await cleanupVoicemail(page);
-    await browser.close();
+    //await browser.close();
+    process.on('exit', async () => {
+        try { await browser?.close(); } catch {}
+    });
     log("✔️ Proceso terminado.", 'info');
 }
 
