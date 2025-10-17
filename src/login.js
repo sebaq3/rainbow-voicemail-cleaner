@@ -39,9 +39,8 @@ async function login() {
 
   try {
     log("🌐 Abriendo página de login...", 'info');
-    await page.goto('https://web.openrainbow.com/rb/2.149.26/index.html#/login', {
-      waitUntil: 'networkidle2'
-    });
+    //await page.goto('https://web.openrainbow.com/rb/2.149.26/index.html#/login', {waitUntil: 'networkidle2'});
+    await page.goto('https://web.openrainbow.com/#/login', { waitUntil: 'networkidle2' });
 
      // Esperar y escribir el usuario
     await page.waitForSelector('#username', { timeout: 10000 });
@@ -122,4 +121,4 @@ async function loginWithRetry(maxRetries = 3) {
   throw new Error(`Fallaron ${maxRetries} intentos de login consecutivos`);
 }
 
-module.exports = {login, loginWithRetry};
+module.exports = {loginWithRetry};

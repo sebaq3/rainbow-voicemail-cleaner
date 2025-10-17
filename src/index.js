@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 require('dotenv').config();
 const cron = require('node-cron');
-const loginWithRetry  = require('./login');
+const { loginWithRetry }  = require('./login');
 const cleanupVoicemail = require('./cleanupVoicemail');
 const { log } = require('./logger');
 
