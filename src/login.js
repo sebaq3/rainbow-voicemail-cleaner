@@ -122,4 +122,4 @@ async function loginWithRetry(maxRetries = 3) {
   throw new Error(`Fallaron ${maxRetries} intentos de login consecutivos`);
 }
 
-module.exports = login;
+module.exports = {login, loginWithRetry};
