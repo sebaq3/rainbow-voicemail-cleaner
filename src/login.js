@@ -15,6 +15,7 @@ async function login() {
     '--disable-setuid-sandbox',
     '--disable-dev-shm-usage',
     '--disable-gpu',
+    '--no-zygote',
     '--disable-software-rasterizer'
 
   ],
