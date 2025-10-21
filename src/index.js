@@ -39,7 +39,7 @@ async function runCleanup() {
         });
         log("✔️ Proceso terminado.", 'info');
     } catch (error) {    
-        log(`❌ Error durante cleanup: ${err.message}`, 'error');
+        log(`❌ Error durante cleanup: ${error.message}`, 'error');
     } finally {
         try {
             fs.unlinkSync(LOCK_FILE);

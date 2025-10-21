@@ -6,6 +6,8 @@ const fs = require('fs');
 async function login() {
   try {
     fs.rmSync('/tmp/.org.chromium.Chromium', { recursive: true, force: true });
+    fs.rmSync('/tmp/chrome_*', { recursive: true, force: true });
+    fs.rmSync('/tmp/puppeteer_dev_chrome_profile-*', { recursive: true, force: true });
   } catch (_) {}
   console.log('Usando Chromium desde:', puppeteer.executablePath());
   const browser = await puppeteer.launch({
@@ -16,7 +18,15 @@ async function login() {
     '--disable-dev-shm-usage',
     '--disable-gpu',
     '--no-zygote',
+    '--single-process',
+    '--no-first-run',
+    '--disable-background-networking',
+    '--disable-translate',
+    '--disable-extensions',
+    '--disable-default-apps',
+    '--hide-scrollbars',
     '--disable-software-rasterizer'
+    
 
   ],
   });
@@ -25,7 +35,7 @@ async function login() {
   // 🩹 Esperar a que el frame principal esté listo
   while (!page.mainFrame()) {
     console.log('Esperando mainFrame...');
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 2000));
   }
 
   
