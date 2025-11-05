@@ -12,6 +12,8 @@ async function login() {
   } catch (_) {}
   try {
     console.log('Usando Chromium desde:', puppeteer.executablePath());
+    console.log('🕒 Esperando 5 segundos antes de abrir el navegador...');
+    await new Promise(resolve => setTimeout(resolve, 5000));
     browser = await puppeteer.launch({
     headless: 'new',
     args: [
@@ -30,7 +32,11 @@ async function login() {
       '--disable-software-rasterizer'
     ],
     });
+    console.log('🌐 Navegador iniciado, esperando 5 segundos para estabilizar...');
+    await new Promise(resolve => setTimeout(resolve, 5000));
     const page = await browser.newPage();
+
+
 
      // 🩹 Esperar a que el frame principal esté listo (manejar errores de timing)
     for (let i = 0; i < 5; i++) {
